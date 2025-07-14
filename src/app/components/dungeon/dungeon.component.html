@@ -1,0 +1,98 @@
+<div class="p-4" *ngIf="dungeon && casillas.length > 0">
+  <h2 class="text-2xl font-bold mb-4 text-center">🗺️ Mapa del Dungeon</h2>
+
+  <div class="flex flex-col lg:flex-row gap-6">
+    
+    <!-- MAPA DEL DUNGEON -->
+    <div
+      class="grid gap-0"
+      [ngStyle]="{ 'grid-template-columns': 'repeat(' + dungeon.xDimension + ', 2rem)' }"
+    >
+      <ng-container *ngFor="let row of casillas; let rowIndex = index; trackBy: trackByIndex">
+        <ng-container *ngFor="let cell of row; let colIndex = index; trackBy: trackByIndex">
+          <div
+            class="w-8 h-8 border border-black flex items-center justify-center transition duration-150 ease-in-out"
+            [ngClass]="[
+              getCasillaColor(cell.type),
+              cell.character
+                ? (isPlayerCharacter(cell.character)
+                  ? 'border-2 border-emerald-700 bg-emerald-300 hover:bg-emerald-400'
+                  : 'border-2 border-red-700 bg-red-300 hover:bg-red-400')
+                : ''
+            ]"
+            [title]="cell.character?.name || cell.type"
+            (click)="onCellClick(rowIndex, colIndex)"
+          >
+            <!-- Imagen del personaje -->
+            <img
+              *ngIf="cell.character?.img && cell.character.hp>0"
+              [src]="cell.character.img"
+              alt="{{ cell.character.name }}"
+              class="w-6 h-6 object-contain cursor-pointer"
+              (click)="selectCharacter(cell.character)"
+            />
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+
+<!-- PANEL DEL PERSONAJE SELECCIONADO -->
+@if (this.selectedCharacter) {
+  <div class="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-lg border border-gray-200">
+    <div class="flex items-center gap-4">
+      <img [src]="this.selectedCharacter.img" class="h-12 w-12 rounded-full object-cover border border-gray-300" />
+      <div>
+        <h1 class="text-lg font-bold">{{ this.selectedCharacter.name }}</h1>
+        <p class="text-sm text-gray-600">Nivel {{ this.selectedCharacter.lvl }}</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 text-sm">
+      <p><span class="font-semibold">❤️ Vida:</span> {{ this.selectedCharacter.hp }}</p>
+      <p><span class="font-semibold">🗡️ Daño:</span> {{ this.selectedCharacter.dmg }}</p>
+      <p><span class="font-semibold">🎚️ Nivel:</span> {{ this.selectedCharacter.lvl }}</p>
+      <p><span class="font-semibold">🏃 Movido:</span> {{ this.selectedCharacter.moved ? 'Sí' : 'No' }}</p>
+    </div>
+
+    <!-- BOTONES DE ACCIONES -->
+    <div class="flex flex-col gap-2">
+      <button class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 transition"
+              (click)="prepareAttack(selectedCharacter)">
+        🗡️ Atacar
+      </button>
+      <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+              [disabled]="selectedCharacter.moved"
+              (click)="moveChar()">
+        🧭 Mover
+      </button>
+      <button class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition"
+              (click)="toggleSpells()">
+        ✨ Usar Hechizo
+      </button>
+    </div>
+
+    <!-- LISTA DE HECHIZOS -->
+    <div *ngIf="showSpells" class="mt-2 space-y-2">
+      @for (spell of this.selectedCharacter.spell; track spell) {
+        <div
+          class="p-2 rounded-md border border-purple-300 bg-purple-50 hover:bg-purple-100 cursor-pointer"
+           (click)="this.prepareSpell(spell)">
+          <!--(click)="onCastSpell(spell, selectedCharacter)-->
+          <div class="flex items-center gap-2 mb-1">
+            <img [src]="spell.img" class="w-6 h-6" />
+            <h2 class="font-semibold text-sm">{{ spell.name }}</h2>
+          </div>
+          <div class="text-xs text-gray-700 pl-1">
+            <p>💥 Daño: {{ spell.dmg }}</p>
+            <p>⏳ Duración: {{ spell.duration }} turnos</p>
+            <p>🔥 Buff Daño: {{ spell.buff_dmg }}</p>
+            <p>💚 Curación: {{ spell.buff_hp }}</p>
+            <p>📅 Disponible en X turnos</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
+</div>
+</div>

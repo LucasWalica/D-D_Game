@@ -57,25 +57,31 @@ export class Dungeon{
     return null;
   }
 
-  isValidMove(curX: number, curY: number, newX: number, newY: number): boolean {
-    // Comprobar que newX,newY están dentro del mapa
-    if(newX < 0 || newX >= this.xDimension || newY < 0 || newY >= this.yDimension) return false;
-    
-    // Comprobar que la casilla destino no es pared ni está ocupada
-    const casillaDestino = this.casillas[newY][newX];
-    if(casillaDestino.type === CasillaType.WALL) return false;
-    if(casillaDestino.character) return false;
+  isValidMove(curX: number, curY: number, newX: number, newY: number, char: Character): boolean {
+    // 1. Verificar límites del mapa
+    if (newX < 0 || newX >= this.xDimension || newY < 0 || newY >= this.yDimension) {
+      return false;
+    }
 
-    // Comprobar que solo se mueve a una casilla ortogonal adyacente (no diagonal)
+    const casillaDestino = this.casillas[newY][newX];
+
+    // 2. La casilla debe ser transitable
+    if (casillaDestino.type === CasillaType.WALL) return false;
+    if (casillaDestino.character) return false;
+
+    // 3. Calcular distancia entre origen y destino (distancia de Chebyshev para movimiento libre en 8 direcciones)
     const dx = Math.abs(newX - curX);
     const dy = Math.abs(newY - curY);
-    // Movimiento válido si se mueve 1 casilla en x o 1 casilla en y pero no ambos (no diagonal)
-    if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
+    const distance = Math.max(dx, dy); // Movimiento diagonal incluido
+
+    // 4. Verificar si está dentro del rango de movimiento del personaje
+    if (distance <= char.moveTiles) {
       return true;
     }
 
     return false;
-}
+  }
+
 
 
   carveDungeon(grid: Casilla[][], startX: number, startY: number, steps: number) {

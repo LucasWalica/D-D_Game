@@ -15,15 +15,17 @@ export class Party {
     return character.hp > 0;
   }
 
-  handleDeath(character: Character) {
+  handleDeath(character: Character):boolean {
     if (character.hp <= 0) {
       character.hp = 0;
       // Remover de vivos
       this.characters = this.characters.filter(c => c !== character);
       // Agregar a muertos
       this.deadCharacters.push(character);
+      return true;
       // Aquí puedes limpiar efectos activos relacionados con este personaje
     }
+    return false;
   }
 
   ataque(atacante: Character, objetivo: Character): boolean {
@@ -61,6 +63,7 @@ export class Party {
         let charactersToParty:Character[] = [] as Character[];
         for(let i=0; i<numberOfCharacters; i++){
             charactersToParty.push(charArray[Math.floor(Math.random()*charArray.length)])
+            charactersToParty[i].id = i;
         }
         return charactersToParty;
     }

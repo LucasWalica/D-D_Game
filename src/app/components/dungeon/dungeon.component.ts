@@ -3,6 +3,7 @@ import { CasillaType, Dungeon } from '../../models/dungeon.model';
 import { Party } from '../../models/party.model';
 import { Character, demonCharacters, humanoidCharacters, Spell } from '../../models/character.model';
 import { CommonModule } from '@angular/common';
+import { Game } from '../../models/game.model';
 
 @Component({
   selector: 'app-dungeon',
@@ -14,7 +15,9 @@ import { CommonModule } from '@angular/common';
 })
 export class DungeonComponent implements OnInit {
 
+
   dungeon!: Dungeon;
+  game:Game = new Game(this.dungeon);
   casillas: any[][] = [];
   selectedCharacter:Character = {} as Character;
   enemyCharacterToAttack:Character = {} as Character;
@@ -23,7 +26,8 @@ export class DungeonComponent implements OnInit {
   isAttacking:boolean = false;
   playerIsMoving:boolean =false;
   playerIsUsingSpell:boolean = false;
-
+  validMovePositions: { row: number; col: number }[] = [];
+ 
 
 
   ngOnInit(): void {
@@ -33,7 +37,11 @@ export class DungeonComponent implements OnInit {
     // Generar el dungeon con tamaño moderado para pruebas y evitar freeze
     this.dungeon = Dungeon.generateDungeon(40, 25, enemyParties, playerParty);
     this.casillas = this.dungeon.casillas;
-    console.log(this.dungeon.enemyParties.characters[0].img)
+    this.game.dungeon = this.dungeon
+  }
+
+  pasarTurno(){
+    this.game.pasarTurno();
   }
 
   getCasillaColor(type: CasillaType): string {
@@ -64,11 +72,20 @@ export class DungeonComponent implements OnInit {
   }
 
   selectCharacter(char:Character){
+    // seleccionar personaje a atacar
     if(this.selectedCharacter && this.isAttacking){
       this.enemyCharacterToAttack = char;
       return;
     }
-    this.selectedCharacter = char;
+    // seleccionar personaje
+    if(this.dungeon.playerParty.characters.includes(char)){
+      this.selectedCharacter = char;
+      this.moveChar();
+    }
+    // seleccionar personaje enemigo 
+    if(this.dungeon.enemyParties.characters.includes(char)){
+      this.selectedCharacter = char;
+    }
   }
 
 
@@ -78,10 +95,26 @@ export class DungeonComponent implements OnInit {
   }
 
 
-  moveChar(){
+  moveChar() {
     this.playerIsMoving = true;
-    alert("selecciona una casilla adyacente para mover al personaje")
+    this.validMovePositions = [];
+
+    const from = this.dungeon.getCharacterPosition(this.selectedCharacter);
+    if (!from) return;
+
+    for (let y = 0; y < this.dungeon.yDimension; y++) {
+      for (let x = 0; x < this.dungeon.xDimension; x++) {
+        if (this.dungeon.isValidMove(from.x, from.y, x, y, this.selectedCharacter)) {
+          this.validMovePositions.push({ row: y, col: x });
+        }
+      }
+    }
+
   }
+
+  isValidMoveTile(row: number, col: number): boolean {
+    return this.validMovePositions.some(pos => pos.row === row && pos.col === col);
+  } 
 
   prepareSpell(spell:Spell){
     this.playerIsUsingSpell=true;
@@ -94,14 +127,15 @@ export class DungeonComponent implements OnInit {
     const clickedCell = this.dungeon.casillas[row][col];
 
     // 🔹 Movimiento
-    if (this.playerIsMoving && this.selectedCharacter) {
+    if (this.playerIsMoving && this.selectedCharacter && !this.dungeon.casillas[row][col].character) {
       const from = this.dungeon.getCharacterPosition(this.selectedCharacter);
       if (!from) return;
 
-      if (this.dungeon.isValidMove(from.x, from.y, col, row)) {
+      if (this.dungeon.isValidMove(from.x, from.y, col, row, this.selectedCharacter)) {
         this.dungeon.casillas[from.y][from.x].character = null;
         this.dungeon.casillas[row][col].character = this.selectedCharacter;
         this.selectedCharacter.moved = true;
+        this.validMovePositions = [];
       } else {
         console.log('Movimiento inválido');
       }
@@ -149,7 +183,7 @@ export class DungeonComponent implements OnInit {
             caster.moved = true;
             console.log(`${spell.name} lanzado sobre ${targetChar.name}`);
           } else {
-            console.log("No se pudo lanzar el hechizo");
+            console.log("No se pudo lanzar el hechizo", "\nlanzador:",caster, "spell:", spell, "target:",targetChar);
           }
         } else {
           console.log("Objetivo no válido para este hechizo.");

@@ -1,6 +1,5 @@
 
 export class Spell {
-
     name:string;
     dmg:number;
     img:string;
@@ -25,6 +24,7 @@ export class Spell {
         this.cooldown_turns_spell = cooldown_turns_spell;
         this.duration = duration;
     }
+
 
 }
 
@@ -56,6 +56,8 @@ export const allSpell:Spell[]= [
 ]
 
 export class Character {
+  // Id para diferenciar personajes iguales
+    id:number= {} as number;
     name:string;
     img:string;
     lvl:number;
@@ -64,12 +66,13 @@ export class Character {
     alcance:number;
     spell:Spell[];
     moved:boolean; 
+    moveTiles:number;
     // add position
 
     constructor(
         name:string, img:string, lvl:number, 
         hp:number, dmg:number, alcance:number, 
-        spell:Spell[], moved:boolean
+        spell:Spell[], moved:boolean, moveTiles:number
     ){
         this.name = name; 
         this.img = img;
@@ -79,6 +82,7 @@ export class Character {
         this.alcance = alcance;
         this.spell = spell;
         this.moved = moved;
+        this.moveTiles = moveTiles;
     }
 
 
@@ -87,86 +91,86 @@ export class Character {
 export const demonCharacters: Character[] = [
   new Character("Demonio cornudo", "assets/basic_demon_animations/antlered rascal/AntleredRascal.gif", 1, 150, 25, 1, [
     allSpell.find(s => s.name === "Magia de fuego")!
-  ], false),
+  ], false, 3),
 
-  new Character("Demonio con garras", "assets/basic_demon_animations/clawed abomination/ClawedAbomination.gif", 1, 120, 38, 1, [], false),
+  new Character("Demonio con garras", "assets/basic_demon_animations/clawed abomination/ClawedAbomination.gif", 1, 120, 38, 1, [], false, 3),
 
   new Character("Diablillo", "assets/basic_demon_animations/crimson imp/CrimsonImp.gif", 1, 60, 20, 1, [
     allSpell.find(s => s.name === "Veneno maestro")!,
     allSpell.find(s => s.name === "Veneno barato")!
-  ], false),
+  ], false, 3),
 
-  new Character("Demonio de Acero", "assets/basic_demon_animations/Depraved Blackguard/DepravedBlackguard.gif", 1, 240, 30, 1, [], false),
+  new Character("Demonio de Acero", "assets/basic_demon_animations/Depraved Blackguard/DepravedBlackguard.gif", 1, 240, 30, 1, [], false, 3),
 
   new Character("Diablillo negro", "assets/basic_demon_animations/fledgling demon/FledglingDemon.gif", 1, 100, 30, 2, [
     allSpell.find(s => s.name === "Magia de oscuridad")!,
-  ], false),
+  ], false, 3),
 
   new Character("Ojo volador", "assets/basic_demon_animations/floating eye/FloatingEye.gif", 1, 130, 25, 3, [
     allSpell.find(s => s.name === "Estallido de oscuridad")!,
     allSpell.find(s => s.name === "Magia de rayo")!
-  ], false),
+  ], false, 3),
 
-  new Character("Minotauro", "assets/basic_demon_animations/foul gouger/FoulGouger.gif", 1, 300, 22, 1, [], false),
+  new Character("Minotauro", "assets/basic_demon_animations/foul gouger/FoulGouger.gif", 1, 300, 22, 1, [], false, 3),
 
   new Character("Demonio negro", "assets/basic_demon_animations/pointed demonspawn/PointedDemonspawn.gif", 1, 130, 25, 1, [
     allSpell.find(s => s.name === "Daga sigilosa")!
-  ], false),
+  ], false, 3),
 
   new Character("Fantasma de la niebla", "assets/basic_demon_animations/skewering stalker/SkeweringStalker.gif", 1, 100, 20, 2, [
     allSpell.find(s => s.name === "Curación demoniaca")!,
     allSpell.find(s => s.name === "Magia de sangre")!
-  ], false),
+  ], false, 3),
 
   new Character("Demonio molesto", "assets/basic_demon_animations/tainted scoundrel/TaintedScoundrel.gif", 1, 110, 24, 2, [
     allSpell.find(s => s.name === "Veneno curador")!
-  ], false),
+  ], false, 3),
 
   new Character("Calavera espectral", "assets/basic_demon_animations/warp skull/WarpSkull.gif", 1, 170, 35, 3, [
     allSpell.find(s => s.name === "Luz de luna")!
-  ], false),
+  ], false, 3),
 ];
 
 export const humanoidCharacters: Character[] = [
-  new Character("Lizardfolk bestial", "assets/Basic Humanoid Animations/bestial lizardfolk/BestialLizardfolk.gif", 1, 160, 26, 1, [], false),
-  new Character("Jinete goblin", "assets/Basic Humanoid Animations/goblin wolf rider/GoblinWolfRider.gif", 1, 100, 24, 2, [findSpell("Magia de bosque")], false),
-  new Character("Arquero goblin", "assets/Basic Humanoid Animations/goblin archer/GoblinArcher.gif", 1, 65, 34, 3, [], false),
-  new Character("Fanático goblin", "assets/Basic Humanoid Animations/goblin fanatic/GoblinFanatic.gif", 1, 80, 28, 2, [findSpell("Magia de sangre")], false),
-  new Character("Luchador goblin", "assets/Basic Humanoid Animations/goblin fighter/GoblinFighter.gif", 1, 120, 26, 1, [], false),
-  new Character("Ocultista goblin", "assets/Basic Humanoid Animations/goblin occultist/GoblinOccultist.gif", 1, 80, 20, 3, [findSpell("Orbe celestial"), findSpell("Estallido de oscuridad")], false),
+  new Character("Lizardfolk bestial", "assets/Basic Humanoid Animations/bestial lizardfolk/BestialLizardfolk.gif", 1, 160, 26, 1, [], false, 3),
+  new Character("Jinete goblin", "assets/Basic Humanoid Animations/goblin wolf rider/GoblinWolfRider.gif", 1, 100, 24, 2, [findSpell("Magia de bosque")], false, 3),
+  new Character("Arquero goblin", "assets/Basic Humanoid Animations/goblin archer/GoblinArcher.gif", 1, 65, 34, 3, [], false, 3),
+  new Character("Fanático goblin", "assets/Basic Humanoid Animations/goblin fanatic/GoblinFanatic.gif", 1, 80, 28, 2, [findSpell("Magia de sangre")], false, 3),
+  new Character("Luchador goblin", "assets/Basic Humanoid Animations/goblin fighter/GoblinFighter.gif", 1, 120, 26, 1, [], false, 3),
+  new Character("Ocultista goblin", "assets/Basic Humanoid Animations/goblin occultist/GoblinOccultist.gif", 1, 80, 20, 3, [findSpell("Orbe celestial"), findSpell("Estallido de oscuridad")], false, 3),
 
-  new Character("Asesino halfling", "assets/Basic Humanoid Animations/halfling assassin/HalflingAssassin.gif", 1, 70, 34, 1, [findSpell("Daga sigilosa"), findSpell("Veneno maestro")], false),
-  new Character("Bardo halfling", "assets/Basic Humanoid Animations/halfling bard/HalflingBard.gif", 1, 80, 22, 2, [findSpell("Luz de druida"), findSpell("Curación en área por turnos")], false),
-  new Character("Explorador halfling", "assets/Basic Humanoid Animations/halfling ranger/HalflingRanger.gif", 1, 95, 24, 3, [findSpell("Luz de luna")], false),
-  new Character("Pícaro halfling", "assets/Basic Humanoid Animations/halfling rogue/HalflingRogue.gif", 1, 70, 28, 1, [findSpell("Veneno curador")], false),
-  new Character("Lancero halfling", "assets/Basic Humanoid Animations/halfling slinger/HalflingSlinger.gif", 1, 80, 25, 3, [], false),
+  new Character("Asesino halfling", "assets/Basic Humanoid Animations/halfling assassin/HalflingAssassin.gif", 1, 70, 34, 1, [findSpell("Daga sigilosa"), findSpell("Veneno maestro")], false, 3),
+  new Character("Bardo halfling", "assets/Basic Humanoid Animations/halfling bard/HalflingBard.gif", 1, 80, 22, 2, [findSpell("Luz de druida"), findSpell("curación en area por turnos")], false, 3),
+  new Character("Explorador halfling", "assets/Basic Humanoid Animations/halfling ranger/HalflingRanger.gif", 1, 95, 24, 3, [findSpell("Luz de luna")], false, 3),
+  new Character("Pícaro halfling", "assets/Basic Humanoid Animations/halfling rogue/HalflingRogue.gif", 1, 70, 28, 1, [findSpell("Veneno curador")], false, 3),
+  new Character("Lancero halfling", "assets/Basic Humanoid Animations/halfling slinger/HalflingSlinger.gif", 1, 80, 25, 3, [], false, 3),
 
-  new Character("Arquero lizardfolk", "assets/Basic Humanoid Animations/lizardfolk archer/LizardfolkArcher.gif", 1, 100, 30, 3, [], false),
-  new Character("Gladiador lizardfolk", "assets/Basic Humanoid Animations/lizardfolk gladiator/LizardfolkGladiator.gif", 1, 180, 30, 1, [], false),
-  new Character("Explorador lizardfolk", "assets/Basic Humanoid Animations/lizardfolk scout/LizardfolkScout.gif", 1, 110, 20, 2, [findSpell("Luz solar")], false),
-  new Character("Lancero lizardfolk", "assets/Basic Humanoid Animations/lizardfolk spearman/LizardfolkSpearman.gif", 1, 120, 24, 2, [findSpell("Veneno barato")], false),
+  new Character("Arquero lizardfolk", "assets/Basic Humanoid Animations/lizardfolk archer/LizardfolkArcher.gif", 1, 100, 30, 3, [], false, 3),
+  new Character("Gladiador lizardfolk", "assets/Basic Humanoid Animations/lizardfolk gladiator/LizardfolkGladiator.gif", 1, 180, 30, 1, [], false, 3),
+  new Character("Explorador lizardfolk", "assets/Basic Humanoid Animations/lizardfolk scout/LizardfolkScout.gif", 1, 110, 20, 2, [findSpell("Luz solar")], false, 3),
+  new Character("Lancero lizardfolk", "assets/Basic Humanoid Animations/lizardfolk spearman/LizardfolkSpearman.gif", 1, 120, 24, 2, [findSpell("Veneno barato")], false, 3),
 ];
 
 
 export const monsterCharacters: Character[] = [
-  new Character("Grimlock ciego", "assets/Basic Monster Animations/Blinded Grimlock/BlindedGrimlock.gif", 1, 160, 26, 1, [findSpell("Estallido de oscuridad")], false),
-  new Character("Cíclope aplastante", "assets/Basic Monster Animations/Crushing Cyclops/CrushingCyclops.gif", 1, 350, 32, 1, [], false),
-  new Character("Slaad turbio", "assets/Basic Monster Animations/Murky Slaad/MurkySlaad.gif", 1, 220, 28, 1, [findSpell("Veneno barato")], false),
-  new Character("Hongo chillón", "assets/Basic Monster Animations/Shrieker Mushroom/ShriekerMushroom.gif", 1, 110, 22, 1, [findSpell("Luz de druida")], false),
+  new Character("Grimlock ciego", "assets/Basic Monster Animations/Blinded Grimlock/BlindedGrimlock.gif", 1, 160, 26, 1, [findSpell("Estallido de oscuridad")], false, 3),
+  new Character("Cíclope aplastante", "assets/Basic Monster Animations/Crushing Cyclops/CrushingCyclops.gif", 1, 350, 32, 1, [], false, 3),
+  new Character("Slaad turbio", "assets/Basic Monster Animations/Murky Slaad/MurkySlaad.gif", 1, 220, 28, 1, [findSpell("Veneno barato")], false, 3),
+  new Character("Hongo chillón", "assets/Basic Monster Animations/Shrieker Mushroom/ShriekerMushroom.gif", 1, 110, 22, 1, [findSpell("Luz de druida")], false, 3),
 
-  new Character("Ojo inyectado en sangre", "assets/Basic Monster Animations/Bloodshot Eye/BloodshotEye.gif", 1, 90, 38, 3, [findSpell("Orbe celestial")], false),
-  new Character("Baba de la muerte", "assets/Basic Monster Animations/Death Slime/DeathSlime.gif", 1, 170, 24, 1, [], false),
-  new Character("Gelatina ocre", "assets/Basic Monster Animations/Ochre Jelly/OchreJelly.gif", 1, 180, 20, 1, [findSpell("Magia de sangre")], false),
-  new Character("Trol de piedra", "assets/Basic Monster Animations/Stone Troll/StoneTroll.gif", 1, 300, 30, 1, [findSpell("Curación en área por turnos")], false),
+  new Character("Ojo inyectado en sangre", "assets/Basic Monster Animations/Bloodshot Eye/BloodshotEye.gif", 1, 90, 38, 3, [findSpell("Orbe celestial")], false, 3),
+  new Character("Baba de la muerte", "assets/Basic Monster Animations/Death Slime/DeathSlime.gif", 1, 170, 24, 1, [], false, 3),
+  new Character("Gelatina ocre", "assets/Basic Monster Animations/Ochre Jelly/OchreJelly.gif", 1, 180, 20, 1, [findSpell("Magia de sangre")], false, 3),
+  new Character("Trol de piedra", "assets/Basic Monster Animations/Stone Troll/StoneTroll.gif", 1, 300, 30, 1, [findSpell("curación en area por turnos")], false, 3),
 
-  new Character("Ogro musculoso", "assets/Basic Monster Animations/Brawny Ogre/BrawnyOgre.gif", 1, 250, 27, 1, [], false),
-  new Character("Miconido fúngico", "assets/Basic Monster Animations/Fungal Myconid/FungalMyconid.gif", 1, 140, 26, 1, [findSpell("Luz de luna")], false),
-  new Character("Vigilante ocular", "assets/Basic Monster Animations/Ocular Watcher/OcularWatcher.gif", 1, 110, 32, 3, [findSpell("Orbe celestial")], false),
-  new Character("Trol del pantano", "assets/Basic Monster Animations/Swamp Troll/SwampTroll.gif", 1, 250, 28, 1, [findSpell("Veneno barato")], false),
+  new Character("Ogro musculoso", "assets/Basic Monster Animations/Brawny Ogre/BrawnyOgre.gif", 1, 250, 27, 1, [], false, 3),
+  new Character("Miconido fúngico", "assets/Basic Monster Animations/Fungal Myconid/FungalMyconid.gif", 1, 140, 26, 1, [findSpell("Luz de luna")], false, 3),
+  new Character("Vigilante ocular", "assets/Basic Monster Animations/Ocular Watcher/OcularWatcher.gif", 1, 110, 32, 3, [findSpell("Orbe celestial")], false, 3),
+  new Character("Trol del pantano", "assets/Basic Monster Animations/Swamp Troll/SwampTroll.gif", 1, 250, 28, 1, [findSpell("Veneno barato")], false, 3),
 
-  new Character("Slaad carmesí", "assets/Basic Monster Animations/Crimson Slaad/CrimsonSlaad.gif", 1, 190, 32, 1, [findSpell("Magia de sangre")], false),
-  new Character("Ettin gigantesco", "assets/Basic Monster Animations/Humongous Ettin/HumongousEttin.gif", 1, 370, 36, 1, [], false),
-  new Character("Gorro rojo", "assets/Basic Monster Animations/Red Cap/RedCap.gif", 1, 120, 28, 2, [findSpell("Veneno barato")], false),
+  new Character("Slaad carmesí", "assets/Basic Monster Animations/Crimson Slaad/CrimsonSlaad.gif", 1, 190, 32, 1, [findSpell("Magia de sangre")], false, 3),
+  new Character("Ettin gigantesco", "assets/Basic Monster Animations/Humongous Ettin/HumongousEttin.gif", 1, 370, 36, 1, [], false, 3),
+  new Character("Gorro rojo", "assets/Basic Monster Animations/Red Cap/RedCap.gif", 1, 120, 28, 2, [findSpell("Veneno barato")], false, 3),
 ];
 
 

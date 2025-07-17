@@ -49,9 +49,9 @@ export class Dungeon{
   getCharacterPosition(character: Character): {x:number, y:number} | null {
     for(let y=0; y<this.yDimension; y++){
       for(let x=0; x<this.xDimension; x++){
-        if(this.casillas[y][x].character === character){
-          return {x, y};
-        }
+          if(this.casillas[y][x].character?.id === character.id){
+            return {x, y};
+          }
       }
     }
     return null;

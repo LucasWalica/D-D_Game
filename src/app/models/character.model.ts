@@ -57,7 +57,7 @@ export const allSpell:Spell[]= [
 
 export class Character {
   // Id para diferenciar personajes iguales
-    id:number= {} as number;
+    id:any= {} as any;
     name:string;
     img:string;
     lvl:number;
@@ -147,7 +147,7 @@ export const humanoidCharacters: Character[] = [
 
   new Character("Arquero lizardfolk", "assets/Basic Humanoid Animations/lizardfolk archer/LizardfolkArcher.gif", 1, 100, 30, 3, [], false, 3),
   new Character("Gladiador lizardfolk", "assets/Basic Humanoid Animations/lizardfolk gladiator/LizardfolkGladiator.gif", 1, 180, 30, 1, [], false, 3),
-  new Character("Explorador lizardfolk", "assets/Basic Humanoid Animations/lizardfolk scout/LizardfolkScout.gif", 1, 110, 20, 2, [findSpell("Luz solar")], false, 3),
+  new Character("Explorador lizardfolk", "assets/Basic Humanoid Animations/lizardfolk scout/LizardfolkScout.gif", 1, 110, 20, 2, [findSpell("Veneno barato")], false, 3),
   new Character("Lancero lizardfolk", "assets/Basic Humanoid Animations/lizardfolk spearman/LizardfolkSpearman.gif", 1, 120, 24, 2, [findSpell("Veneno barato")], false, 3),
 ];
 

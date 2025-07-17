@@ -22,7 +22,6 @@ export class DungeonComponent implements OnInit {
   selectedCharacter:Character = {} as Character;
   enemyCharacterToAttack:Character = {} as Character;
   selectedSpell:Spell = {} as Spell;
-  showSpells = false;
   isAttacking:boolean = false;
   playerIsMoving:boolean =false;
   playerIsUsingSpell:boolean = false;
@@ -38,6 +37,7 @@ export class DungeonComponent implements OnInit {
     this.dungeon = Dungeon.generateDungeon(40, 25, enemyParties, playerParty);
     this.casillas = this.dungeon.casillas;
     this.game.dungeon = this.dungeon
+    console.log(this.dungeon.playerParty.characters);
   }
 
   pasarTurno(){
@@ -67,25 +67,28 @@ export class DungeonComponent implements OnInit {
     return this.dungeon.playerParty.characters.includes(character);
   }
 
-  toggleSpells() {
-    this.showSpells = !this.showSpells;
-  }
 
   selectCharacter(char:Character){
+
     // seleccionar personaje a atacar
     if(this.selectedCharacter && this.isAttacking){
       this.enemyCharacterToAttack = char;
       return;
     }
     // seleccionar personaje
-    if(this.dungeon.playerParty.characters.includes(char)){
-      this.selectedCharacter = char;
+    if(this.dungeon.playerParty.characters.some(c => c.id === char.id)){
+      let charID = char.id
+      let selected = this.dungeon.playerParty.characters.find(char => char.id === charID);
+      if(selected){
+        this.selectedCharacter = selected 
+      }
       this.moveChar();
     }
     // seleccionar personaje enemigo 
     if(this.dungeon.enemyParties.characters.includes(char)){
       this.selectedCharacter = char;
     }
+
   }
 
 

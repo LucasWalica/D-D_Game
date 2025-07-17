@@ -59,12 +59,25 @@ export class Party {
 
     // funcion que asigna personajes aleatorios a la party
     // usado para parties de enemigos en mazmorras
-    static generateRandomParty(charArray:Character[], numberOfCharacters:number):Character[]{
-        let charactersToParty:Character[] = [] as Character[];
-        for(let i=0; i<numberOfCharacters; i++){
-            charactersToParty.push(charArray[Math.floor(Math.random()*charArray.length)])
-            charactersToParty[i].id = i;
-        }
-        return charactersToParty;
+   static generateRandomParty(charArray: Character[], numberOfCharacters: number): Character[] {
+    const charactersToParty: Character[] = [];
+
+    for (let i = 0; i < numberOfCharacters; i++) {
+        const baseChar = charArray[Math.floor(Math.random() * charArray.length)];
+
+        // Crear una copia independiente del personaje
+        const newChar: Character = {
+        ...baseChar,
+        id: crypto.randomUUID(),  // ID aleatorio
+        spell: baseChar.spell ? [...baseChar.spell] : [],
+        moved: false
+        };
+
+        charactersToParty.push(newChar);
     }
+
+    return charactersToParty;
+    }
+
+
 }

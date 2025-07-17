@@ -62,14 +62,10 @@
               (click)="prepareAttack(selectedCharacter)">
         🗡️ Atacar
       </button>
-      <button class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition"
-              (click)="toggleSpells()">
-        ✨ Usar Hechizo
-      </button>
     </div>
 
     <!-- LISTA DE HECHIZOS -->
-    <div *ngIf="showSpells" class="mt-2 space-y-2">
+    <div class="mt-2 space-y-2">
       @for (spell of this.selectedCharacter.spell; track spell) {
         <div
           class="p-2 rounded-md border border-purple-300 bg-purple-50 hover:bg-purple-100 cursor-pointer"

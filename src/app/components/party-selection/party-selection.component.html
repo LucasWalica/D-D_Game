@@ -1,1 +1,73 @@
-<p>party-selection works!</p>
+<div class="bg-amber-800 h-auto">
+    
+    <div>
+        <h1 class="text-center text-xl text-white p-4">Select a party type:</h1>
+        <div class="flex flex-row justify-center gap-4 p-4">
+            <button class="pl-4 pr-4 p-2 rounded-md bg-green-500 
+            text-black border-2 border-emerald-950 hover:bg-emerald-950 
+            hover:text-emerald-400 hover:border-emerald-400 
+            transition duration-150 cursor-pointer" 
+            (click)="selectPartyType(this.humanoidChars)">
+                Humanoids
+            </button>
+            <button class="pl-4 pr-4 p-2 rounded-md bg-red-500 
+            text-black border-2 border-red-950 hover:bg-red-950 
+            hover:text-red-400 hover:border-red-400 
+            transition duration-150 cursor-pointer" 
+            (click)="selectPartyType(this.demonChars)">
+                Demons
+            </button>
+            <button class="pl-4 pr-4 p-2 rounded-md bg-gray-500 
+            text-black border-2 border-gray-950 hover:bg-gray-950 
+            hover:text-gray-400 hover:border-gray-400 
+            transition duration-150 cursor-pointer" 
+            (click)="selectPartyType(this.monstersChar)">
+                Monsters
+            </button>
+        </div>
+    </div>
+    <div class="flex justify-center p-4">
+        <h1 class="text-xl text-white">Number of selected Characters {{this.numberOfChars}}</h1>
+        <button class="pl-4 pr-4 p-2 rounded-md bg-green-500 
+            text-black border-2 border-emerald-950 hover:bg-emerald-950 
+            hover:text-emerald-400 hover:border-emerald-400 
+            transition duration-150 cursor-pointer" *ngIf="this.numberOfChars>minimunChars" (click)="goToMap()">Go To map</button>
+    </div>
+    @if(selectedPartyType.length>0){
+    <div>
+        <h1 class="text-center text-xl text-white p-4">Select 10 characters:</h1>
+        <div class="grid grid-cols-4 ml-10 mr-10">
+            @for (char of this.selectedPartyType; track char) {
+                <div class="p-4 border-2 border-amber-300 rounded-md 
+                flex-col justify-center text-center text-amber-50 bg-orange-800">
+                    <h2>{{char.name}}</h2>
+                    <img [src]="char.img" class="h-8 w-8 mx-auto">
+                    <div class="grid grid-col-3">
+                        <div>HP:{{char.hp}}</div>
+                        <div>DMG:{{char.dmg}}</div>
+                        <div>RANGE:{{char.alcance}}</div>
+                    </div>
+                    <button class="pl-4 pr-4 p-2 rounded-md bg-green-500 
+            text-black border-2 border-emerald-950 hover:bg-emerald-950 
+            hover:text-emerald-400 hover:border-emerald-400 
+            transition duration-150 cursor-pointer" (click)="this.addCharacter(char)">Add Character</button>
+                    @for (spell of char.spell; track spell) {
+                        <div class="p-2 border-2 border-amber-200 rounded-md text-center flex-col text-amber-50">
+                            <h2>{{spell.name}}</h2>
+                            <img [src]="spell.img" class="mx-auto h-8 w-8">
+                            <div class="grid grid-cols-2">
+                                <h3 *ngIf="spell.buff_dmg>0">Buff DMG: {{spell.buff_dmg}}</h3>
+                                <h3 *ngIf="spell.buff_hp>0">Restoration: {{spell.buff_hp}}</h3>
+                                <h3 *ngIf="spell.dmg>0">DMG: {{spell.dmg}}</h3>
+                                <h3 *ngIf="spell.duration>0">Duration: {{spell.duration}}</h3>
+                                <h3 *ngIf="spell.cooldown_turns_spell>0">Cooldown Turns: {{spell.cooldown_turns_spell}}</h3>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    }
+    
+</div>

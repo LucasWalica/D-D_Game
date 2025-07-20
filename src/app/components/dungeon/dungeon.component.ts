@@ -30,8 +30,8 @@ export class DungeonComponent implements OnInit {
 
 
   ngOnInit(): void {
-    const playerParty = new Party(Party.generateRandomParty(humanoidCharacters, 5), [], []);
-    const enemyParties = new Party(Party.generateRandomParty(demonCharacters, 10), [], []);
+    const playerParty = new Party(Party.generateRandomParty(humanoidCharacters, 5), [], [], []);
+    const enemyParties = new Party(Party.generateRandomParty(demonCharacters, 10), [], [], []);
 
     // Generar el dungeon con tamaño moderado para pruebas y evitar freeze
     this.dungeon = Dungeon.generateDungeon(40, 25, enemyParties, playerParty);

@@ -4,11 +4,13 @@ export class Party {
   characters: Character[];
   deadCharacters: Character[];
   activeEffects: any[];
+  inventory:any[];
 
-  constructor(characters: Character[], deadCharacters: Character[], activeEffects: any[]) {
+  constructor(characters: Character[], deadCharacters: Character[], activeEffects: any[], inventory:any[]) {
     this.characters = characters;
     this.deadCharacters = deadCharacters;
     this.activeEffects = activeEffects;
+    this.inventory = inventory;
   }
 
   isAlive(character: Character): boolean {
@@ -45,10 +47,12 @@ export class Party {
       objetivo.hp -= hechizo.dmg;
       this.handleDeath(objetivo);
     }
+    // buuf hp
     if (hechizo.buff_hp !== 0 && objetivo) {
       objetivo.hp += hechizo.buff_hp;
       // Opcional: limitar hp máximo
     }
+    // buff dmg
     if (hechizo.buff_dmg !== 0 && objetivo) {
       objetivo.dmg += hechizo.buff_dmg;
     }
@@ -78,6 +82,16 @@ export class Party {
 
     return charactersToParty;
     }
+
+
+  addCharacter(char:Character){
+    const charToParty:Character = {
+      ...char,
+      id:crypto.randomUUID(),
+    }
+
+    this.characters.push(charToParty);
+  }
 
 
 }

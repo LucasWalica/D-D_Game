@@ -103,12 +103,12 @@ export const demonCharacters: Character[] = [
   new Character("Demonio de Acero", "assets/basic_demon_animations/Depraved Blackguard/DepravedBlackguard.gif", 1, 240, 30, 1, [], false, 3),
 
   new Character("Diablillo negro", "assets/basic_demon_animations/fledgling demon/FledglingDemon.gif", 1, 100, 30, 2, [
-    allSpell.find(s => s.name === "Magia de oscuridad")!,
+    findSpell("Magia de sangre"),
   ], false, 3),
 
   new Character("Ojo volador", "assets/basic_demon_animations/floating eye/FloatingEye.gif", 1, 130, 25, 3, [
-    allSpell.find(s => s.name === "Estallido de oscuridad")!,
-    allSpell.find(s => s.name === "Magia de rayo")!
+    findSpell("Estallido de oscuridad"),
+    findSpell("Magia de rayo")
   ], false, 3),
 
   new Character("Minotauro", "assets/basic_demon_animations/foul gouger/FoulGouger.gif", 1, 300, 22, 1, [], false, 3),
